@@ -38,11 +38,6 @@ import org.bukkit.material.MaterialData;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by David on 5/23/2015.
- *
- * @author David
- */
 @SuppressWarnings("deprecation")
 class Toggle implements Listener {
     private final MaterialData match = new MaterialData(Material.INK_SACK, (byte) 10);

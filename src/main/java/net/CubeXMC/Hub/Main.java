@@ -6,25 +6,33 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public class Main extends JavaPlugin {
     public static final Logger logger = Logger.getLogger("Minecraft");
     public static final List<String> bioHeads = new ArrayList<>();
+    public static Plugin plugin;
     public static String title;
     public static List<String> enabling;
     public static List<String> cooldown;
     public static HashMap<String, HeadHunt> hhunt;
+    public static HashMap<UUID, ItemStack[]> invs = new HashMap<>();
+    public static HashMap<UUID, ItemStack[]> armors = new HashMap<>();
 
     static {
         Main.title = ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "CubeXMC" + ChatColor.DARK_GRAY + "]";
@@ -46,13 +54,66 @@ public class Main extends JavaPlugin {
         }, 200L);
     }
 
+    public static void loadInventory(Player player) {
+        File f = new File(plugin.getDataFolder() + File.separator + "playerdata" + File.separator + player.getName() + ".yml");
+        FileConfiguration con = YamlConfiguration.loadConfiguration(f);
+        List<?> itemList = con.getList("inv.items");
+        List<?> armorList = con.getList("inv.armor");
+        if (itemList != null && !itemList.isEmpty()) {
+            ItemStack[] inv = itemList.toArray(new ItemStack[itemList.size()]);
+            invs.put(player.getUniqueId(), inv);
+        }
+        if (armorList != null && !armorList.isEmpty()) {
+            ItemStack[] armor = armorList.toArray(new ItemStack[armorList.size()]);
+            armors.put(player.getUniqueId(), armor);
+        }
+        try {
+            con.save(f);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        update(player);
+    }
+
+    public static void saveInventory(Player p) {
+        File f = new File(plugin.getDataFolder() + File.separator + "playerdata" + File.separator + p.getName() + ".yml");
+        FileConfiguration con = YamlConfiguration.loadConfiguration(f);
+        ItemStack[] inv = invs.get(p.getUniqueId());
+        ItemStack[] armor = armors.get(p.getUniqueId());
+        if (inv != null && inv.length != 0) {
+            con.set("inv.items", inv);
+        }
+        if (armor != null && armor.length != 0) {
+            con.set("inv.armor", armor);
+        }
+        try {
+            con.save(f);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        update(p);
+    }
+
+    public static void update(Player player) {
+        File f = new File(plugin.getDataFolder() + File.separator + "playerdata" + File.separator + player.getName() + ".yml");
+        FileConfiguration con = YamlConfiguration.loadConfiguration(f);
+        try {
+            con.load(f);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void onEnable() {
+        plugin = this;
 
         final PluginManager pm = Bukkit.getServer().getPluginManager();
         pm.registerEvents(new Launch(), this);
         pm.registerEvents(new Punch(), this);
         pm.registerEvents(new Toggle(), this);
         pm.registerEvents(new HeadHuntListener(), this);
+        pm.registerEvents(new Pvp(), this);
 
         File fdir = new File(getDataFolder() + "/playerdata/");
         fdir.mkdir();
@@ -81,6 +142,16 @@ public class Main extends JavaPlugin {
 
     public void onDisable() {
         HeadHuntUtil.save(this);
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (Pvp.pvpers.contains(p)) {
+                Main.invs.put(p.getUniqueId(), p.getInventory().getContents());
+                Main.armors.put(p.getUniqueId(), p.getInventory().getArmorContents());
+                Pvp.pvpers.remove(p);
+            }
+            p.getInventory().setArmorContents(null);
+            p.getInventory().clear();
+            Main.saveInventory(p);
+        }
     }
 
     public boolean onCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {

@@ -18,7 +18,7 @@ class Launch implements Listener {
     public void onClick(final PlayerInteractEntityEvent e) {
         final Player p = e.getPlayer();
         final Player p2 = (Player) e.getRightClicked();
-        if (p2 != null && p.hasPermission("cubexmchub.punch")) {
+        if (p2 != null && p.hasPermission("cubexmchub.punch") && !Pvp.isPvp(p) && !Pvp.isPvp(p2)) {
             if (Main.canPunch(p, p2)) {
                 final Firework fw = (Firework) p2.getWorld().spawnEntity(p2.getLocation(), EntityType.FIREWORK);
                 final FireworkMeta fwm = fw.getFireworkMeta();

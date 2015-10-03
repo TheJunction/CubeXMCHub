@@ -7,6 +7,7 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 class HeadHuntUtil {
 
@@ -29,9 +30,6 @@ class HeadHuntUtil {
 
         for (HeadHunt bh : Main.hhunt.values()) {
             File f = new File(p.getDataFolder() + File.separator + "playerdata" + File.separator + bh.getName() + ".yml");
-            if (f.exists()) {
-                f.delete();
-            }
             try {
                 f.createNewFile();
             } catch (IOException e) {
@@ -41,7 +39,11 @@ class HeadHuntUtil {
             FileConfiguration config = YamlConfiguration.loadConfiguration(f);
             ArrayList<String> collectedSkulls = bh.collectedSkulls();
             ArrayList<String> gotAch = bh.getAchievements();
+            List<?> itemList = config.getList("inv.items");
+            List<?> armorList = config.getList("inv.armor");
 
+            config.set("inv.items", itemList);
+            config.set("inv.armor", armorList);
             config.set("Collected-Skulls", collectedSkulls);
             config.set("Achievements", gotAch);
 

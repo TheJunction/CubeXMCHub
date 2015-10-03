@@ -10,7 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -26,12 +25,6 @@ class HeadHuntListener implements Listener {
     private Inventory test2;
     private Inventory test3;
     private Inventory hhAch;
-
-    @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        event.getPlayer().setWalkSpeed(0.7f);
-    }
-
     @EventHandler
     public void onClick(PlayerInteractEvent e) {
         Player p = e.getPlayer();

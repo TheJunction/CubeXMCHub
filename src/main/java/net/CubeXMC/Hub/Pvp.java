@@ -60,6 +60,9 @@ public class Pvp implements Listener {
             p.getInventory().setContents(p.getEnderChest().getContents());
             pvpers.remove(p);
         }
+        if (event.getTo().getBlockY() <= 60 && p.isFlying()) {
+            p.setFlying(false);
+        }
     }
 
     @EventHandler

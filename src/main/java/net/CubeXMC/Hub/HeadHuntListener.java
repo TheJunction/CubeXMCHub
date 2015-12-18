@@ -448,8 +448,11 @@ class HeadHuntListener implements Listener {
             ArrayList<String> s = hh.collectedSkulls();
 
             int j = 0;
-
-            test = Bukkit.createInventory(null, 54, "Collected Skulls: " + s.size());
+            int i = 9;
+            while (s.size() > i) {
+                i = i + 9;
+            }
+            test = Bukkit.createInventory(null, i, "Collected Skulls: " + s.size());
 
             while (s.size() > j) {
 

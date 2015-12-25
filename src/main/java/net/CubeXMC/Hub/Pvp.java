@@ -1,16 +1,19 @@
 package net.CubeXMC.Hub;
 
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.DyeColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
+import org.bukkit.material.Wool;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -33,8 +36,13 @@ public class Pvp implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
         Player p = event.getPlayer();
-        if (event.getTo().getBlockY() <= 60 && !pvpers.contains(p)) {
+        MaterialData standingOn = event.getTo().getBlock().getRelative(BlockFace.DOWN).getState().getData();
+        if (standingOn instanceof Wool && ((Wool) standingOn).getColor() == DyeColor.GRAY) {
+            p.setWalkSpeed(0.7f);
+        } else {
             p.setWalkSpeed(0.2f);
+        }
+        if (event.getTo().getBlockY() <= 60 && !pvpers.contains(p)) {
             p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 60, 255));
             p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 60, 255));
             p.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 60, 255));
@@ -53,7 +61,6 @@ public class Pvp implements Listener {
             }
             pvpers.add(p);
         } else if (event.getTo().getBlockY() > 60 && pvpers.contains(p)) {
-            event.getPlayer().setWalkSpeed(0.7f);
             Main.invs.put(p.getUniqueId(), p.getInventory().getContents());
             Main.armors.put(p.getUniqueId(), p.getInventory().getArmorContents());
             p.getInventory().setArmorContents(null);
@@ -62,6 +69,14 @@ public class Pvp implements Listener {
         }
         if (event.getTo().getBlockY() <= 60 && p.isFlying()) {
             p.setFlying(false);
+        }
+    }
+
+    @EventHandler
+    public void shift(PlayerToggleSneakEvent event) {
+        Location playerLoc = event.getPlayer().getLocation();
+        if (event.isSneaking() && playerLoc.getBlock().getRelative(BlockFace.DOWN).getType() == Material.IRON_TRAPDOOR) {
+            event.getPlayer().teleport(new Location(event.getPlayer().getWorld(), Math.floor(playerLoc.getBlockX()) + 0.5, 63, Math.floor(playerLoc.getBlockZ()) + 0.5));
         }
     }
 

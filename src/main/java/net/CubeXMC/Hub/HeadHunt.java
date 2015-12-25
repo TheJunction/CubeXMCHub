@@ -1,20 +1,21 @@
 package net.CubeXMC.Hub;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class HeadHunt {
 
-	private final String name;
+	private final UUID uuid;
 	private final ArrayList<String> collectedSkulls = new ArrayList<>();
 	private final ArrayList<String> achievements = new ArrayList<>();
 	//private int Coins;
 
-	public HeadHunt(String name) {
-		this.name = name;
+	public HeadHunt(UUID uuid) {
+		this.uuid = uuid;
 	}
 
-	public String getName() {
-		return name;
+	public UUID getUUID() {
+		return uuid;
 	}
 
 	public ArrayList<String> collectedSkulls() {

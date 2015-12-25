@@ -30,7 +30,7 @@ public class Main extends JavaPlugin {
     public static String title;
     public static List<String> enabling;
     public static List<String> cooldown;
-    public static HashMap<String, HeadHunt> hhunt;
+    public static HashMap<UUID, HeadHunt> hhunt;
     public static HashMap<UUID, ItemStack[]> invs = new HashMap<>();
     public static HashMap<UUID, ItemStack[]> armors = new HashMap<>();
 
@@ -55,7 +55,7 @@ public class Main extends JavaPlugin {
     }
 
     public static void loadInventory(Player player) {
-        File f = new File(plugin.getDataFolder() + File.separator + "playerdata" + File.separator + player.getName() + ".yml");
+        File f = new File(plugin.getDataFolder() + File.separator + "playerdata" + File.separator + player.getUniqueId().toString() + ".yml");
         FileConfiguration con = YamlConfiguration.loadConfiguration(f);
         List<?> itemList = con.getList("inv.items");
         List<?> armorList = con.getList("inv.armor");
@@ -76,7 +76,7 @@ public class Main extends JavaPlugin {
     }
 
     public static void saveInventory(Player p) {
-        File f = new File(plugin.getDataFolder() + File.separator + "playerdata" + File.separator + p.getName() + ".yml");
+        File f = new File(plugin.getDataFolder() + File.separator + "playerdata" + File.separator + p.getUniqueId().toString() + ".yml");
         FileConfiguration con = YamlConfiguration.loadConfiguration(f);
         ItemStack[] inv = invs.get(p.getUniqueId());
         ItemStack[] armor = armors.get(p.getUniqueId());
@@ -95,7 +95,7 @@ public class Main extends JavaPlugin {
     }
 
     public static void update(Player player) {
-        File f = new File(plugin.getDataFolder() + File.separator + "playerdata" + File.separator + player.getName() + ".yml");
+        File f = new File(plugin.getDataFolder() + File.separator + "playerdata" + File.separator + player.getUniqueId().toString() + ".yml");
         FileConfiguration con = YamlConfiguration.loadConfiguration(f);
         try {
             con.load(f);
@@ -125,8 +125,8 @@ public class Main extends JavaPlugin {
         }
         for (int i = 0; i < j; i++) {
             File f = aof[i];
-            String name = f.getName().replace(".yml", "");
-            HeadHuntUtil.load(this, name);
+            String uuid = f.getName().replace(".yml", "");
+            HeadHuntUtil.load(this, UUID.fromString(uuid));
         }
 
         bioHeads.add("PantherMan594");
@@ -138,9 +138,15 @@ public class Main extends JavaPlugin {
         bioHeads.add("Jo_Dan");
         bioHeads.add("ShatteredMines2");
         bioHeads.add("terturl");
+        for (Player p : getServer().getOnlinePlayers()) {
+            Main.loadInventory(p);
+        }
     }
 
     public void onDisable() {
+        for (Player p : getServer().getOnlinePlayers()) {
+            Main.saveInventory(p);
+        }
         HeadHuntUtil.save(this);
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (Pvp.pvpers.contains(p)) {
@@ -174,7 +180,7 @@ public class Main extends JavaPlugin {
             if (p.hasPermission("cubexmchub.hhadmin") && label.equalsIgnoreCase("cubex")) {
                 if (args[0].equalsIgnoreCase("statr")) {
                     if (args[1] != null) {
-                        HeadHunt bh = HeadHuntUtil.getByName(args[1]);
+                        HeadHunt bh = HeadHuntUtil.getByUUID(UUID.fromString(args[1]));
                         if (bh != null) {
                             bh.collectedSkulls().clear();
                             bh.getAchievements().clear();

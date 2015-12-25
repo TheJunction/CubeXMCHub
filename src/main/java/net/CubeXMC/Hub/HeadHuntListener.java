@@ -34,7 +34,7 @@ class HeadHuntListener implements Listener {
                 Skull b = (Skull) e.getClickedBlock().getState();
                 String s = b.getOwner();
 
-                HeadHunt hh = HeadHuntUtil.getByName(p.getName());
+                HeadHunt hh = HeadHuntUtil.getByUUID(p.getUniqueId());
 
                 Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "title " + p.getName() + " title �6Collected Skull!");
                 Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "subtitle " + p.getName() + " title �6" + s);
@@ -197,7 +197,7 @@ class HeadHuntListener implements Listener {
 
         ItemStack hh = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
         ItemMeta Hh = hh.getItemMeta();
-        HeadHunt hH = HeadHuntUtil.getByName(p.getName());
+        HeadHunt hH = HeadHuntUtil.getByUUID(p.getUniqueId());
         Hh.setDisplayName(ChatColor.GOLD + "Head Hunt");
         hh.setItemMeta(Hh);
 
@@ -382,7 +382,7 @@ class HeadHuntListener implements Listener {
 
         hhAch = Bukkit.createInventory(null, 27, "HeadHunt Achievements");
 
-        HeadHunt hh = HeadHuntUtil.getByName(p.getName());
+        HeadHunt hh = HeadHuntUtil.getByUUID(p.getUniqueId());
 
         if (hh != null && !hh.getAchievements().contains("BountyHunter"))
             hhAch.setItem(2, h1);
@@ -443,7 +443,7 @@ class HeadHuntListener implements Listener {
 
     private Inventory openSkulls(Player p) {
 
-        HeadHunt hh = HeadHuntUtil.getByName(p.getName());
+        HeadHunt hh = HeadHuntUtil.getByUUID(p.getUniqueId());
         if (hh != null) {
             ArrayList<String> s = hh.collectedSkulls();
 

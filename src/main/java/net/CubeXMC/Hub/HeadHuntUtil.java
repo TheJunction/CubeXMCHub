@@ -8,28 +8,29 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 class HeadHuntUtil {
 
-    public static HeadHunt getByName(String name) {
+    public static HeadHunt getByUUID(UUID uuid) {
 
-        if (Main.hhunt.get(name) == null) {
-            HeadHunt bh = new HeadHunt(name);
-            Main.hhunt.put(name, bh);
+        if (Main.hhunt.get(uuid) == null) {
+            HeadHunt bh = new HeadHunt(uuid);
+            Main.hhunt.put(uuid, bh);
             return bh;
         }
-        if (Main.hhunt.get(name) == null) {
+        if (Main.hhunt.get(uuid) == null) {
             return null;
         }
 
-        return Main.hhunt.get(name);
+        return Main.hhunt.get(uuid);
 
     }
 
     public static void save(Plugin p) {
 
         for (HeadHunt bh : Main.hhunt.values()) {
-            File f = new File(p.getDataFolder() + File.separator + "playerdata" + File.separator + bh.getName() + ".yml");
+            File f = new File(p.getDataFolder() + File.separator + "playerdata" + File.separator + bh.getUUID().toString() + ".yml");
             try {
                 f.createNewFile();
             } catch (IOException e) {
@@ -57,14 +58,14 @@ class HeadHuntUtil {
     }
 
     @SuppressWarnings("unchecked")
-    public static void load(Plugin p, String name) {
-        File f = new File(p.getDataFolder() + File.separator + "playerdata" + File.separator + name + ".yml");
+    public static void load(Plugin p, UUID uuid) {
+        File f = new File(p.getDataFolder() + File.separator + "playerdata" + File.separator + uuid.toString() + ".yml");
         if (f.exists()) {
             FileConfiguration config = YamlConfiguration.loadConfiguration(f);
             ArrayList<String> collectedSkulls = (ArrayList<String>) config.get("Collected-Skulls");
             ArrayList<String> Achievements = (ArrayList<String>) config.get("Achievements");
 
-            HeadHunt hh = new HeadHunt(name);
+            HeadHunt hh = new HeadHunt(uuid);
             if (collectedSkulls != null) {
                 for (String cs : collectedSkulls) {
                     hh.collectSkull(cs);
@@ -76,7 +77,7 @@ class HeadHuntUtil {
                     hh.addAche(a);
                 }
             }
-            Main.hhunt.put(name, hh);
+            Main.hhunt.put(uuid, hh);
         }
     }
 

@@ -108,8 +108,10 @@ public class Pvp implements Listener {
         if (p != null && p2 != null) {
             if (!isPvp(p)) {
                 p.sendMessage(ChatColor.RED + "You cannot attack while in a no-pvp zone!");
+                event.setCancelled(true);
             } else if (!isPvp(p2)) {
                 p.sendMessage(ChatColor.RED + "You cannot attack someone in a no-pvp zone!");
+                event.setCancelled(true);
             }
         }
     }

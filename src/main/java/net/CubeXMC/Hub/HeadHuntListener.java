@@ -67,10 +67,10 @@ class HeadHuntListener implements Listener {
                             break;
                     }
                     hBio(s, p);
-                    if (!hh.getAchievements().contains("OwntheOwners") && hh.collectedSkulls().contains("PantherMan594") && hh.collectedSkulls().contains("Vek") && hh.collectedSkulls().contains("SandwichOverdose")) {
+                    if (!hh.getAchievements().contains("OwntheOwners") && hh.collectedSkulls().contains("Cux") && hh.collectedSkulls().contains("SandwichOverdose")) {
                         achMsg(p, "Own the Owners!", hh);
                     }
-                    if (!hh.getAchievements().contains("HeadsofAdmins") && hh.collectedSkulls().contains("Major_Dork") && hh.collectedSkulls().contains("Blitzkim2") && hh.collectedSkulls().contains("HYPExMon5ter")) {
+                    if (!hh.getAchievements().contains("HeadsofAdmins") && hh.collectedSkulls().contains("Blitzkim2")) {
                         achMsg(p, "Heads of Admins!", hh);
                     }
 
@@ -97,37 +97,18 @@ class HeadHuntListener implements Listener {
                 p.sendMessage(Main.title + ChatColor.WHITE + " Jo_Dan is an amazing builder. And that's an understatement. " +
                         "He probably built everything you see around here, well everything good. If you see him, thank him for his amazing work!");
                 break;
-            case "Major_Dork":
-                p.sendMessage(Main.title + ChatColor.WHITE + " Major_Dork is one of our 3 head admins.");
-                break;
-            case "HYPExMon5ter":
-                p.sendMessage(Main.title + ChatColor.WHITE + " HYPExMon5ter is one of our 3 head admins.");
-                break;
             case "Blitzkim2":
-                p.sendMessage(Main.title + ChatColor.WHITE + " Blitzkim2 is the first of our 3 head admins. Scratch that. She was the second. " +
+                p.sendMessage(Main.title + ChatColor.WHITE + " Blitzkim2 is the first of our admins. Scratch that. She was the second. " +
                         "The second player (not including the founders) to ever join this server.");
                 break;
-            case "PantherMan594":
-                p.sendMessage(Main.title + ChatColor.WHITE + " Panther is one of the awesome owners of this server, CubeXMC. " +
+            case "Cux":
+                p.sendMessage(Main.title + ChatColor.WHITE + " Cux is one of the awesome owners of this server, CubeXMC. " +
                         "He works mainly on behind the scenes stuff. You'd better stay away, or his inner panther will come out at you!");
-                break;
-            case "Vek":
-                p.sendMessage(Main.title + ChatColor.WHITE + " Vek is an owner of CubeXMC. And yes, he has HELLA swag. " +
-                        "He's the one who manages your donations and puts them into good use for the server. " +
-                        "He might also be the reason why you even found this server!");
                 break;
             case "SandwichOverdose":
                 p.sendMessage(Main.title + ChatColor.WHITE + " An owner of CubeXMC, SandwichOverdose is the guy who will ban you if you make trouble. " +
-                        "However he's not all bad, because he'll be the one promoting you if he thinks you are helpful to the server!");
+                        "However he's not all bad, because he'll also be the one promoting you if he thinks you are helpful to the server!");
                 break;
-            case "ShatteredMines2":
-                p.sendMessage(Main.title + ChatColor.WHITE + " ShatteredMines2 is one of our many Youtubers, who likes to help out and have fun. " +
-                        "His Youtube channel can be found here: https://www.youtube.com/user/DRAGROD1");
-                break;
-            case "terturl":
-                p.sendMessage(Main.title + ChatColor.WHITE + " He is the one that actually started the making of this plugin! He is the one"
-                        + " who will most likely see if you good enough for being a dev. He, along with Panther, code all the plugins"
-                        + " that our custom on this server.");
             default:
                 break;
         }

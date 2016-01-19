@@ -1,5 +1,6 @@
 package net.CubeXMC.Hub;
 
+import be.maximvdw.titlemotd.ui.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -36,8 +37,10 @@ class HeadHuntListener implements Listener {
 
                 HeadHunt hh = HeadHuntUtil.getByUUID(p.getUniqueId());
 
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "title " + p.getName() + " title �6Collected Skull!");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "subtitle " + p.getName() + " title �6" + s);
+                Title title = new Title("Collected Skull!", s);
+                title.setTitleColor(ChatColor.GOLD);
+                title.setSubtitleColor(ChatColor.GOLD);
+                title.send(p);
 
                 if (hh != null && hh.collectSkull(s)) {
                     p.sendMessage(Main.title + ChatColor.GOLD + " You have collected " + ChatColor.GREEN + s + ChatColor.GOLD + "'s Head!");

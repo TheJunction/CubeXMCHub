@@ -39,7 +39,7 @@ class HeadHuntListener implements Listener {
 
                 Title title = new Title("Collected Skull!", s);
                 title.setTitleColor(ChatColor.GOLD);
-                title.setSubtitleColor(ChatColor.GOLD);
+                title.setSubtitleColor(ChatColor.GREEN);
                 title.send(p);
 
                 if (hh != null && hh.collectSkull(s)) {

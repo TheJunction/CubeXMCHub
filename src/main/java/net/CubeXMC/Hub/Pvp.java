@@ -1,5 +1,7 @@
 package net.CubeXMC.Hub;
 
+import me.konsolas.aac.api.HackType;
+import me.konsolas.aac.api.PlayerViolationEvent;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -67,8 +69,22 @@ public class Pvp implements Listener {
             p.getInventory().setContents(p.getEnderChest().getContents());
             pvpers.remove(p);
         }
-        if (event.getTo().getBlockY() <= 60 && p.isFlying()) {
+        int x = event.getTo().getBlockX();
+        int y = event.getTo().getBlockY();
+        int z = event.getTo().getBlockZ();
+        if (!p.isOp() && p.isFlying() && (event.getTo().getBlockY() <= 60 || (7 <= x && x <= 36 && 65 <= y && y <= 131 && 47 <= z && z <= 65))) {
             p.setFlying(false);
+            p.sendMessage(ChatColor.RED + "You can't fly in this area!");
+        }
+    }
+
+    @EventHandler
+    public void onPlayerViolation(PlayerViolationEvent event) {
+        if (event.getHackType().equals(HackType.SPEED)) {
+            MaterialData standingOn = event.getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN).getState().getData();
+            if (standingOn instanceof Wool && ((Wool) standingOn).getColor() == DyeColor.GRAY) {
+                event.setCancelled(true);
+            }
         }
     }
 

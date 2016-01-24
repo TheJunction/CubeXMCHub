@@ -62,5 +62,12 @@
             <version>${spigot.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>me.konsolas.aac</groupId>
+            <artifactId>aac</artifactId>
+            <version>1.9.7-b32</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/AAC.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>

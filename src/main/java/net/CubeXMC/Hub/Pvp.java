@@ -72,8 +72,9 @@ public class Pvp implements Listener {
         int x = event.getTo().getBlockX();
         int y = event.getTo().getBlockY();
         int z = event.getTo().getBlockZ();
-        if (!p.isOp() && p.isFlying() && (event.getTo().getBlockY() <= 60 || (7 <= x && x <= 36 && 65 <= y && y <= 131 && 47 <= z && z <= 65))) {
+        if (!p.isOp() && (p.isFlying() || p.getAllowFlight()) && (event.getTo().getBlockY() <= 60 || (7 <= x && x <= 36 && 65 <= y && y <= 131 && 47 <= z && z <= 65))) {
             p.setFlying(false);
+            p.setAllowFlight(false);
             p.sendMessage(ChatColor.RED + "You can't fly in this area!");
         }
     }

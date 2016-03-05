@@ -1,4 +1,4 @@
-main: net.CubeXMC.Hub.Main
+main: net.cubexmc.CubeXMCHub.CubeXMCHub
 name: CubeXMCHub
 authors: [terturl, PantherMan594]
 version: #VERSION#

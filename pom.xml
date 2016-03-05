@@ -3,14 +3,14 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>net.CubeXMC</groupId>
-    <artifactId>Hub</artifactId>
+    <groupId>net.cubexmc</groupId>
+    <artifactId>CubeXMCHub</artifactId>
     <version>1.0</version>
     <name>Hub</name>
     <description>CubeXMC Hub plugin!</description>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spigot.version>1.8.8-R0.1-SNAPSHOT</spigot.version>
+        <spigot.version>1.9-R0.1-SNAPSHOT</spigot.version>
     </properties>
     <build>
         <defaultGoal>clean package</defaultGoal>
@@ -61,6 +61,13 @@
             <artifactId>spigot-api</artifactId>
             <version>${spigot.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.minecraft</groupId>
+            <artifactId>minecraft</artifactId>
+            <version>1.9</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../libs/spigot.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>me.konsolas.aac</groupId>

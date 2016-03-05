@@ -1,4 +1,4 @@
-package net.CubeXMC.Hub;
+package net.cubexmc.CubeXMCHub;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,22 +14,22 @@ class HeadHuntUtil {
 
     public static HeadHunt getByUUID(UUID uuid) {
 
-        if (Main.hhunt.get(uuid) == null) {
+        if (CubeXMCHub.hhunt.get(uuid) == null) {
             HeadHunt bh = new HeadHunt(uuid);
-            Main.hhunt.put(uuid, bh);
+            CubeXMCHub.hhunt.put(uuid, bh);
             return bh;
         }
-        if (Main.hhunt.get(uuid) == null) {
+        if (CubeXMCHub.hhunt.get(uuid) == null) {
             return null;
         }
 
-        return Main.hhunt.get(uuid);
+        return CubeXMCHub.hhunt.get(uuid);
 
     }
 
     public static void save(Plugin p) {
 
-        for (HeadHunt bh : Main.hhunt.values()) {
+        for (HeadHunt bh : CubeXMCHub.hhunt.values()) {
             File f = new File(p.getDataFolder() + File.separator + "playerdata" + File.separator + bh.getUUID().toString() + ".yml");
             try {
                 f.createNewFile();
@@ -77,7 +77,7 @@ class HeadHuntUtil {
                     hh.addAche(a);
                 }
             }
-            Main.hhunt.put(uuid, hh);
+            CubeXMCHub.hhunt.put(uuid, hh);
         }
     }
 

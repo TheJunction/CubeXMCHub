@@ -6,7 +6,7 @@
     <groupId>net.cubexmc</groupId>
     <artifactId>CubeXMCHub</artifactId>
     <version>1.0</version>
-    <name>Hub</name>
+    <name>CubeXMCHub</name>
     <description>CubeXMC Hub plugin!</description>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -19,6 +19,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.Dye;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Wool;
 import org.bukkit.potion.PotionEffect;
@@ -29,8 +30,15 @@ import java.util.*;
 
 class Listeners implements Listener {
 
-    private static final MaterialData match = new MaterialData(Material.INK_SACK, (byte) 10);
-    private final MaterialData match2 = new MaterialData(Material.INK_SACK, (byte) 8);
+    private static Dye match;
+    private static Dye match2;
+
+    static {
+        match = new Dye();
+        match.setColor(DyeColor.LIME);
+        match2 = new Dye();
+        match2.setColor(DyeColor.GRAY);
+    }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
@@ -41,27 +49,31 @@ class Listeners implements Listener {
     public void onClick(PlayerInteractEvent e) {
         Player p = e.getPlayer();
 
-        if (p.hasPermission("cubexmchub.toggle") && (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
+        if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             ItemStack stack = p.getInventory().getItemInMainHand();
             ItemMeta meta = stack.getItemMeta();
-            if (stack.getData().equals(match) && !CubeXMCHub.enabling.contains(p.getName())) {
-                CubeXMCHub.enabling.add(p.getName());
-                meta.setDisplayName(ChatColor.RED + "Punching Disabled");
-                List<String> lore = new ArrayList<>();
-                lore.add(ChatColor.BLUE + "Right click to enable punching!");
-                meta.setLore(lore);
-                stack.setDurability((short) 8);
-                p.sendMessage(String.valueOf(CubeXMCHub.title) + ChatColor.RED + " Punching is now disabled!");
-            } else if (stack.getData().equals(match2) && CubeXMCHub.enabling.contains(p.getName())) {
-                CubeXMCHub.enabling.remove(p.getName());
-                meta.setDisplayName(ChatColor.BLUE + "Punching Enabled");
-                List<String> lore = new ArrayList<>();
-                lore.add(ChatColor.RED + "Right click to disable punching!");
-                meta.setLore(lore);
-                stack.setDurability((short) 10);
-                p.sendMessage(String.valueOf(CubeXMCHub.title) + ChatColor.GREEN + " Punching is now enabled!");
+            if (!noFlyZone(p) && stack.getType() == Material.BLAZE_POWDER) {
+                p.setVelocity(p.getLocation().getDirection().multiply(5));
+            } else if (p.hasPermission("cubexmchub.toggle")) {
+                if (stack.getData().equals(match) && !CubeXMCHub.enabling.contains(p.getName())) {
+                    CubeXMCHub.enabling.add(p.getName());
+                    meta.setDisplayName(ChatColor.RED + "Punching Disabled");
+                    List<String> lore = new ArrayList<>();
+                    lore.add(ChatColor.BLUE + "Right click to enable punching!");
+                    meta.setLore(lore);
+                    stack.setDurability((short) 8);
+                    p.sendMessage(String.valueOf(CubeXMCHub.title) + ChatColor.RED + " Punching is now disabled!");
+                } else if (stack.getData().equals(match2) && CubeXMCHub.enabling.contains(p.getName())) {
+                    CubeXMCHub.enabling.remove(p.getName());
+                    meta.setDisplayName(ChatColor.BLUE + "Punching Enabled");
+                    List<String> lore = new ArrayList<>();
+                    lore.add(ChatColor.RED + "Right click to disable punching!");
+                    meta.setLore(lore);
+                    stack.setDurability((short) 10);
+                    p.sendMessage(String.valueOf(CubeXMCHub.title) + ChatColor.GREEN + " Punching is now enabled!");
+                }
+                stack.setItemMeta(meta);
             }
-            stack.setItemMeta(meta);
         }
 
         if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
@@ -277,10 +289,7 @@ class Listeners implements Listener {
         } else if (event.getTo().getBlockY() > 60 && Pvp.pvpers.contains(p)) {
             Pvp.pvpers.remove(p);
         }
-        int x = event.getTo().getBlockX();
-        int y = event.getTo().getBlockY();
-        int z = event.getTo().getBlockZ();
-        if (!p.isOp() && (p.isFlying() || p.getAllowFlight()) && (event.getTo().getBlockY() <= 60 || (7 <= x && x <= 36 && 65 <= y && y <= 131 && 47 <= z && z <= 65))) {
+        if (noFlyZone(p)) {
             p.setFlying(false);
             p.setAllowFlight(false);
             p.sendMessage(net.md_5.bungee.api.ChatColor.RED + "You can't fly in this area!");
@@ -349,5 +358,9 @@ class Listeners implements Listener {
         colorMap.put(16, Color.WHITE);
         colorMap.put(17, Color.YELLOW);
         return colorMap.get(i);
+    }
+
+    private boolean noFlyZone(Player p) {
+        return !p.isOp() && (p.isFlying() || p.getAllowFlight()) && (p.getLocation().getBlockY() <= 60 || (7 <= p.getLocation().getBlockX() && p.getLocation().getBlockX() <= 36 && 65 <= p.getLocation().getBlockY() && p.getLocation().getBlockY() <= 131 && 47 <= p.getLocation().getBlockZ() && p.getLocation().getBlockZ() <= 65));
     }
 }

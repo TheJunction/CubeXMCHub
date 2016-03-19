@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-class CubeXMCHub extends JavaPlugin {
+public class CubeXMCHub extends JavaPlugin {
     static final Logger logger = Logger.getLogger("Minecraft");
     static final List<String> bioHeads = new ArrayList<>();
     static Plugin plugin;

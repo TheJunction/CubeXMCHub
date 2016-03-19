@@ -10,11 +10,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 class Pvp {
 
+    private static final int INV_SIZE = 34;
     static List<Player> pvpers = new ArrayList<>();
 
     static boolean isPvp(Player p) {
@@ -33,9 +35,16 @@ class Pvp {
             p.getInventory().setArmorContents(armorList.toArray(new ItemStack[armorList.size()]));
         }
 
-        for (int i = 0; i < p.getInventory().getSize() - 3; i++) {
-            p.getInventory().setItem(i + 3, p.getInventory().getItem(i));
-            p.getInventory().clear(i);
+        p.getInventory().remove(Material.INK_SACK);
+        p.getInventory().remove(Material.BOOK);
+        p.getInventory().remove(Material.ENDER_CHEST);
+
+        while (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) != null) {
+            for (int i = 0; i < INV_SIZE; i++) {
+                int j = INV_SIZE - i;
+                p.getInventory().setItem(j + 1, p.getInventory().getItem(j));
+                p.getInventory().clear(j);
+            }
         }
 
         ItemStack stack = new MaterialData(Material.INK_SACK).toItemStack();
@@ -65,5 +74,11 @@ class Pvp {
         p.getInventory().setItem(2, stack);
 
         p.setWalkSpeed(0.7f);
+        con.set("inv", null);
+        try {
+            con.save(f);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

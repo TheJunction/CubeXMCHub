@@ -29,7 +29,7 @@ import java.util.*;
 
 class Listeners implements Listener {
 
-    public static final MaterialData match = new MaterialData(Material.INK_SACK, (byte) 10);
+    private static final MaterialData match = new MaterialData(Material.INK_SACK, (byte) 10);
     private final MaterialData match2 = new MaterialData(Material.INK_SACK, (byte) 8);
 
     @EventHandler
@@ -41,7 +41,7 @@ class Listeners implements Listener {
     public void onClick(PlayerInteractEvent e) {
         Player p = e.getPlayer();
 
-        if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+        if (p.hasPermission("cubexmchub.toggle") && (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
             ItemStack stack = p.getInventory().getItemInMainHand();
             ItemMeta meta = stack.getItemMeta();
             if (stack.getData().equals(match) && !CubeXMCHub.enabling.contains(p.getName())) {

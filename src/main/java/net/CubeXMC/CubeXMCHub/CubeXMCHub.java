@@ -20,14 +20,14 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-public class CubeXMCHub extends JavaPlugin {
-    public static final Logger logger = Logger.getLogger("Minecraft");
-    public static final List<String> bioHeads = new ArrayList<>();
-    public static Plugin plugin;
-    public static String title;
-    public static List<String> enabling;
-    public static List<String> cooldown;
-    public static HashMap<UUID, HeadHunt> hhunt;
+class CubeXMCHub extends JavaPlugin {
+    static final Logger logger = Logger.getLogger("Minecraft");
+    static final List<String> bioHeads = new ArrayList<>();
+    static Plugin plugin;
+    static String title;
+    static List<String> enabling;
+    static List<String> cooldown;
+    static HashMap<UUID, HeadHunt> hhunt;
 
     static {
         CubeXMCHub.title = ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "CubeXMC" + ChatColor.DARK_GRAY + "]";
@@ -36,11 +36,11 @@ public class CubeXMCHub extends JavaPlugin {
         CubeXMCHub.hhunt = new HashMap<>();
     }
 
-    public static boolean canPunch(Player p, Player p2) {
+    static boolean canPunch(Player p, Player p2) {
         return (!CubeXMCHub.enabling.contains(p2.getName()) && !CubeXMCHub.enabling.contains(p.getName()) && (!CubeXMCHub.cooldown.contains(p.getName()) || p.hasPermission("cubexmchub.bypass")));
     }
 
-    public static void coolDown(final String s) {
+    static void coolDown(final String s) {
         Bukkit.getServer().getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin("CubeXMCHub"), new Runnable() {
             @Override
             public void run() {

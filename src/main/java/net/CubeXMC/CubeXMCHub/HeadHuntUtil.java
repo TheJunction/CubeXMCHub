@@ -12,7 +12,7 @@ import java.util.UUID;
 
 class HeadHuntUtil {
 
-    public static HeadHunt getByUUID(UUID uuid) {
+    static HeadHunt getByUUID(UUID uuid) {
 
         if (CubeXMCHub.hhunt.get(uuid) == null) {
             HeadHunt bh = new HeadHunt(uuid);
@@ -27,7 +27,7 @@ class HeadHuntUtil {
 
     }
 
-    public static void save(Plugin p) {
+    static void save(Plugin p) {
 
         for (HeadHunt bh : CubeXMCHub.hhunt.values()) {
             File f = new File(p.getDataFolder() + File.separator + "playerdata" + File.separator + bh.getUUID().toString() + ".yml");
@@ -58,7 +58,7 @@ class HeadHuntUtil {
     }
 
     @SuppressWarnings("unchecked")
-    public static void load(Plugin p, UUID uuid) {
+    static void load(Plugin p, UUID uuid) {
         File f = new File(p.getDataFolder() + File.separator + "playerdata" + File.separator + uuid.toString() + ".yml");
         if (f.exists()) {
             FileConfiguration config = YamlConfiguration.loadConfiguration(f);

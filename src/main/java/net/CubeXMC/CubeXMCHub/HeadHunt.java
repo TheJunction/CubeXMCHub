@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class HeadHunt {
+class HeadHunt {
 
 	private static Inventory test;
 	private static Inventory test2;
@@ -23,27 +23,27 @@ public class HeadHunt {
 	private final ArrayList<String> collectedSkulls = new ArrayList<>();
 	private final ArrayList<String> achievements = new ArrayList<>();
 
-	public HeadHunt(UUID uuid) {
+	HeadHunt(UUID uuid) {
 		this.uuid = uuid;
 	}
 
-    public static Inventory getHhAch() {
-        return hhAch;
+	static Inventory getHhAch() {
+		return hhAch;
     }
 
-    public static Inventory getTest3() {
-        return test3;
+	static Inventory getTest3() {
+		return test3;
     }
 
-    public static Inventory getTest2() {
-        return test2;
+	static Inventory getTest2() {
+		return test2;
     }
 
-    public static Inventory getTest() {
-        return test;
+	static Inventory getTest() {
+		return test;
     }
 
-    public static void hBio(String name, Player p) {
+	static void hBio(String name, Player p) {
 		switch (name) {
 			case "Jo_Dan":
 				CubeXMCHub.logger.info("JO!");
@@ -67,13 +67,13 @@ public class HeadHunt {
 		}
 	}
 
-	public static void achMsg(Player p, String name, HeadHunt hh) {
+	static void achMsg(Player p, String name, HeadHunt hh) {
 		p.sendMessage(CubeXMCHub.title + ChatColor.GOLD + " Achievement Get!");
 		p.sendMessage(CubeXMCHub.title + ChatColor.WHITE + " " + name);
 		hh.addAche(name.replace("!", "").replace(" ", "").replace("?", ""));
 	}
 
-	public static Inventory open() {
+	static Inventory open() {
 
 		ItemStack border = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 2);
 		ItemMeta Border = border.getItemMeta();
@@ -127,7 +127,7 @@ public class HeadHunt {
 		return test2;
 	}
 
-	public static Inventory openAch(Player p) {
+	static Inventory openAch(Player p) {
 
 		ItemStack hh = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
 		ItemMeta Hh = hh.getItemMeta();
@@ -208,7 +208,7 @@ public class HeadHunt {
 		return test3;
 	}
 
-	public static Inventory hhAch(Player p) {
+	static Inventory hhAch(Player p) {
 
 		ItemStack border = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 2);
 		ItemMeta Border = border.getItemMeta();
@@ -375,7 +375,7 @@ public class HeadHunt {
 		return hhAch;
 	}
 
-	public static Inventory openSkulls(Player p) {
+	static Inventory openSkulls(Player p) {
 
 		HeadHunt hh = HeadHuntUtil.getByUUID(p.getUniqueId());
 		if (hh != null) {
@@ -406,15 +406,15 @@ public class HeadHunt {
 		return null;
 	}
 
-	public UUID getUUID() {
+	UUID getUUID() {
 		return uuid;
 	}
 
-	public ArrayList<String> collectedSkulls() {
+	ArrayList<String> collectedSkulls() {
 		return this.collectedSkulls;
 	}
 
-	public boolean collectSkull(String name) {
+	boolean collectSkull(String name) {
 		if (!collectedSkulls.contains(name)) {
 			collectedSkulls.add(name);
 
@@ -423,11 +423,11 @@ public class HeadHunt {
 		return false;
 	}
 
-	public ArrayList<String> getAchievements() {
+	ArrayList<String> getAchievements() {
 		return achievements;
 	}
 
-	public void addAche(String achie) {
+	void addAche(String achie) {
 		if (!achievements.contains(achie)) {
 			achievements.add(achie);
 		}

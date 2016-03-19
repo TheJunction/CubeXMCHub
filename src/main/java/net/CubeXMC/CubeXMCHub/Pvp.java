@@ -2,54 +2,68 @@ package net.cubexmc.CubeXMCHub;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pvp {
+class Pvp {
 
-    public static List<Player> pvpers = new ArrayList<>();
+    static List<Player> pvpers = new ArrayList<>();
 
-    public static List<Material> clearItems = new ArrayList<>();
-
-    static {
-        clearItems.add(Material.INK_SACK);
-        clearItems.add(Material.ENDER_CHEST);
-        clearItems.add(Material.BOOK);
-    }
-
-    public static boolean isPvp(Player p) {
+    static boolean isPvp(Player p) {
         return pvpers.contains(p);
     }
 
-    public static void loadInventory(Player p) {
-        for (Material m : clearItems) {
-            p.getInventory().remove(m);
+    static void loadInventory(Player p) {
+        File f = new File(CubeXMCHub.plugin.getDataFolder() + File.separator + "playerdata" + File.separator + p.getUniqueId().toString() + ".yml");
+        FileConfiguration con = YamlConfiguration.loadConfiguration(f);
+        List<?> itemList = con.getList("inv.items");
+        List<?> armorList = con.getList("inv.armor");
+        if (itemList != null && !itemList.isEmpty()) {
+            p.getInventory().setContents(itemList.toArray(new ItemStack[itemList.size()]));
         }
-        if (p.hasPermission("cubexmchub.toggle")) {
-            ItemStack stack = new MaterialData(Material.INK_SACK).toItemStack();
-            stack.setDurability((short) 10);
-            stack.setAmount(1);
-            ItemMeta meta = stack.getItemMeta();
-            meta.setDisplayName(ChatColor.BLUE + "Punching Enabled");
-            List<String> lore = new ArrayList<>();
-            lore.add(ChatColor.RED + "Right click to disable punching!");
-            meta.setLore(lore);
-            stack.setItemMeta(meta);
-            p.getInventory().addItem(stack);
+        if (armorList != null && !armorList.isEmpty()) {
+            p.getInventory().setArmorContents(armorList.toArray(new ItemStack[armorList.size()]));
         }
-        ItemStack stack = new ItemStack(Material.BOOK, 1);
+
+        for (int i = 0; i < p.getInventory().getSize() - 3; i++) {
+            p.getInventory().setItem(i + 3, p.getInventory().getItem(i));
+            p.getInventory().clear(i);
+        }
+
+        ItemStack stack = new MaterialData(Material.INK_SACK).toItemStack();
+        stack.setDurability((short) 10);
+        stack.setAmount(1);
         ItemMeta meta = stack.getItemMeta();
-        meta.setDisplayName(ChatColor.GREEN + "Skulls Collected");
+        meta.setDisplayName(ChatColor.BLUE + "Punching Enabled");
         List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.RED + "Right click to disable punching!");
+        meta.setLore(lore);
+        stack.setItemMeta(meta);
+        p.getInventory().setItem(0, stack);
+
+        stack = new ItemStack(Material.BOOK, 1);
+        meta = stack.getItemMeta();
+        meta.setDisplayName(ChatColor.GREEN + "Skulls Collected");
+        lore = new ArrayList<>();
         lore.add(ChatColor.BLUE + "Right click a skull to collect it!");
         meta.setLore(lore);
         stack.setItemMeta(meta);
-        p.getInventory().addItem(stack);
+        p.getInventory().setItem(1, stack);
+
+        stack = new ItemStack(Material.ENDER_CHEST);
+        meta = stack.getItemMeta();
+        meta.setDisplayName(ChatColor.GOLD.toString() + ChatColor.BOLD + "Particle Menu!");
+        stack.setItemMeta(meta);
+        p.getInventory().setItem(2, stack);
+
         p.setWalkSpeed(0.7f);
     }
 }

@@ -53,7 +53,7 @@ class Listeners implements Listener {
             ItemStack stack = p.getInventory().getItemInMainHand();
             ItemMeta meta = stack.getItemMeta();
             if (!noFlyZone(p) && stack.getType() == Material.BLAZE_POWDER) {
-                p.setVelocity(p.getLocation().getDirection().multiply(5));
+                p.setVelocity(p.getLocation().getDirection().multiply(stack.getAmount() + 1));
             } else if (p.hasPermission("cubexmchub.toggle")) {
                 if (stack.getData().equals(match) && !CubeXMCHub.enabling.contains(p.getName())) {
                     CubeXMCHub.enabling.add(p.getName());
@@ -361,6 +361,6 @@ class Listeners implements Listener {
     }
 
     private boolean noFlyZone(Player p) {
-        return !p.isOp() && (p.isFlying() || p.getAllowFlight()) && (p.getLocation().getBlockY() <= 60 || (7 <= p.getLocation().getBlockX() && p.getLocation().getBlockX() <= 36 && 65 <= p.getLocation().getBlockY() && p.getLocation().getBlockY() <= 131 && 47 <= p.getLocation().getBlockZ() && p.getLocation().getBlockZ() <= 65));
+        return !p.isOp() && (p.isFlying() || p.getAllowFlight()) && (p.getLocation().getBlockY() <= 60 || (7 <= p.getLocation().getBlockX() && p.getLocation().getBlockX() <= 36 && 65 <= p.getLocation().getBlockY() && p.getLocation().getBlockY() <= 132 && 44 <= p.getLocation().getBlockZ() && p.getLocation().getBlockZ() <= 99));
     }
 }

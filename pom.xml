@@ -63,11 +63,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>net.minecraft</groupId>
-            <artifactId>minecraft</artifactId>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
             <version>1.9</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/../libs/spigot.jar</systemPath>
+            <systemPath>${project.basedir}/libs/spigot.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>me.konsolas.aac</groupId>

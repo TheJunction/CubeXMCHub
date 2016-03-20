@@ -16,7 +16,6 @@ import java.util.List;
 
 class Pvp {
 
-    private static final int INV_SIZE = 34;
     static List<Player> pvpers = new ArrayList<>();
 
     static boolean isPvp(Player p) {
@@ -35,28 +34,36 @@ class Pvp {
             p.getInventory().setArmorContents(armorList.toArray(new ItemStack[armorList.size()]));
         }
 
+        p.getInventory().remove(Material.COMPASS);
         p.getInventory().remove(Material.INK_SACK);
         p.getInventory().remove(Material.BOOK);
         p.getInventory().remove(Material.ENDER_CHEST);
 
-        while (p.getInventory().getItem(0) != null && p.getInventory().getItem(1) != null && p.getInventory().getItem(2) != null) {
-            for (int i = 0; i < INV_SIZE; i++) {
-                int j = INV_SIZE - i;
-                p.getInventory().setItem(j + 1, p.getInventory().getItem(j));
-                p.getInventory().clear(j);
+        for (int i = 0; i < 4; i++) {
+            int j = i;
+            while (p.getInventory().getItem(j) != null) {
+                j++;
             }
+            p.getInventory().setItem(j, p.getInventory().getItem(i));
+            p.getInventory().clear(i);
         }
 
-        ItemStack stack = new MaterialData(Material.INK_SACK).toItemStack();
+        ItemStack stack = new ItemStack(Material.COMPASS);
+        ItemMeta meta = stack.getItemMeta();
+        meta.setDisplayName(ChatColor.GOLD.toString() + ChatColor.BOLD + "Server Selector");
+        stack.setItemMeta(meta);
+        p.getInventory().setItem(0, stack);
+
+        stack = new MaterialData(Material.INK_SACK).toItemStack();
         stack.setDurability((short) 10);
         stack.setAmount(1);
-        ItemMeta meta = stack.getItemMeta();
+        meta = stack.getItemMeta();
         meta.setDisplayName(ChatColor.BLUE + "Punching Enabled");
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.RED + "Right click to disable punching!");
         meta.setLore(lore);
         stack.setItemMeta(meta);
-        p.getInventory().setItem(0, stack);
+        p.getInventory().setItem(1, stack);
 
         stack = new ItemStack(Material.BOOK, 1);
         meta = stack.getItemMeta();
@@ -65,13 +72,13 @@ class Pvp {
         lore.add(ChatColor.BLUE + "Right click a skull to collect it!");
         meta.setLore(lore);
         stack.setItemMeta(meta);
-        p.getInventory().setItem(1, stack);
+        p.getInventory().setItem(2, stack);
 
         stack = new ItemStack(Material.ENDER_CHEST);
         meta = stack.getItemMeta();
         meta.setDisplayName(ChatColor.GOLD.toString() + ChatColor.BOLD + "Particle Menu!");
         stack.setItemMeta(meta);
-        p.getInventory().setItem(2, stack);
+        p.getInventory().setItem(3, stack);
 
         p.setWalkSpeed(0.7f);
         con.set("inv", null);

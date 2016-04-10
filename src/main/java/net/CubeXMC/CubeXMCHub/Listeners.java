@@ -289,11 +289,13 @@ class Listeners implements Listener {
         } else if (event.getTo().getBlockY() > 60 && Pvp.pvpers.contains(p)) {
             Pvp.pvpers.remove(p);
         }
-        if (noFlyZone(p)) {
+        if (!p.isOp() && noFlyZone(p) && (p.isFlying() || p.getAllowFlight() || p.isGliding())) {
             p.setFlying(false);
             p.setAllowFlight(false);
-            p.getInventory().addItem(p.getInventory().getChestplate());
-            p.getInventory().setChestplate(null);
+            if (p.getInventory().getChestplate() != null && p.getInventory().getChestplate().getType() == Material.ELYTRA) {
+                p.getInventory().addItem(p.getInventory().getChestplate());
+                p.getInventory().setChestplate(null);
+            }
             p.sendMessage(net.md_5.bungee.api.ChatColor.RED + "You can't fly in this area!");
         }
     }
@@ -363,6 +365,6 @@ class Listeners implements Listener {
     }
 
     private boolean noFlyZone(Player p) {
-        return !p.isOp() && (p.isFlying() || p.getAllowFlight() || p.getInventory().getChestplate().getType() == Material.ELYTRA) && (p.getLocation().getBlockY() <= 60 || (7 <= p.getLocation().getBlockX() && p.getLocation().getBlockX() <= 36 && 65 <= p.getLocation().getBlockY() && p.getLocation().getBlockY() <= 132 && 44 <= p.getLocation().getBlockZ() && p.getLocation().getBlockZ() <= 99));
+        return p.getLocation().getBlockY() <= 60 || (7 <= p.getLocation().getBlockX() && p.getLocation().getBlockX() <= 36 && 65 <= p.getLocation().getBlockY() && p.getLocation().getBlockY() <= 132 && 44 <= p.getLocation().getBlockZ() && p.getLocation().getBlockZ() <= 99);
     }
 }

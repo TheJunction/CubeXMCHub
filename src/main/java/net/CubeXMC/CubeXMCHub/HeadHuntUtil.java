@@ -7,7 +7,6 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 class HeadHuntUtil {
@@ -40,11 +39,9 @@ class HeadHuntUtil {
             FileConfiguration config = YamlConfiguration.loadConfiguration(f);
             ArrayList<String> collectedSkulls = bh.collectedSkulls();
             ArrayList<String> gotAch = bh.getAchievements();
-            List<?> itemList = config.getList("inv.items");
-            List<?> armorList = config.getList("inv.armor");
 
-            config.set("inv.items", itemList);
-            config.set("inv.armor", armorList);
+            config.set("inv.items", null);
+            config.set("inv.armor", null);
             config.set("Collected-Skulls", collectedSkulls);
             config.set("Achievements", gotAch);
 
@@ -68,7 +65,8 @@ class HeadHuntUtil {
             HeadHunt hh = new HeadHunt(uuid);
             if (collectedSkulls != null) {
                 for (String cs : collectedSkulls) {
-                    hh.collectSkull(cs);
+                    if (cs != null)
+                        hh.collectSkull(cs);
                 }
             }
 
